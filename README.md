@@ -112,9 +112,12 @@ All generated code was then integrated, reviewed, and validated locally using `n
 ## Deploy (Vercel)
 
 1. Import repo into Vercel.
-2. Set `RESEND_API_KEY` and `EMAIL_FROM` in Vercel project environment variables.["Emails sent via onboarding@resend.dev for assessment purposes due to Resend free tier limitations.]
-3. Deploy.
-4. Use deployed frontend URL and submit the form to hit live backend and send live email.
+2. Set `RESEND_API_KEY` and `EMAIL_FROM` in Vercel project environment variables. ["Emails sent via onboarding@resend.dev for assessment purposes due to Resend free tier limitations.]
+3. PDF generation on Vercel uses `@sparticuz/chromium` with `puppeteer-core` so no manual Chrome install is required.
+4. Deploy.
+5. Use deployed frontend URL and submit the form to hit live backend and send live email.
+
+If you test locally and need to target a specific browser binary, set `PUPPETEER_EXECUTABLE_PATH` in `.env.local`.
 
 ## Extend the assessment
 

@@ -1,14 +1,24 @@
 import { ComputedAssessmentResult } from "@/lib/domain/types";
 import { buildReportPdfHtml } from "@/lib/services/templates/reportEmail";
-import puppeteer from "puppeteer";
+import chromium from "@sparticuz/chromium";
+import puppeteer from "puppeteer-core";
 
 export async function generateReportPdf(
   result: ComputedAssessmentResult,
 ): Promise<Buffer> {
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  });
+  const isVercel = Boolean(process.env.VERCEL);
+  const browser = isVercel
+    ? await puppeteer.launch({
+        headless: true,
+        executablePath: await chromium.executablePath(),
+        args: [...chromium.args, "--no-sandbox", "--disable-setuid-sandbox"],
+      })
+    : await import("puppeteer").then((module) =>
+        module.default.launch({
+          headless: true,
+          args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        }),
+      );
 
   try {
     const page = await browser.newPage();
